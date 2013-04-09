@@ -2,7 +2,7 @@ require 'uri'
 
 module Sendyr
 	class Client
-		attr_reader :http_client, :last_result, :api_key, :base_uri, :list_id
+		attr_reader :last_result, :api_key, :base_uri, :list_id
 
 		def initialize(list_id = nil)
 			@list_id     = list_id
