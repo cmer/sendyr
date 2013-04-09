@@ -137,6 +137,49 @@ describe Sendyr::Client do
 
       client.active_subscriber_count.should == false
 		end
-
 	end
+
+		describe "#update_subscription" do
+			it "returns false if email was never subscribed" do
+				client.should_receive(:subscription_status).with(email: @email).and_return(:not_in_list)
+				client.should_receive(:unsubscribe).never
+				client.should_receive(:subscribe).never
+
+	      client.update_subscription(@email, { name: 'John'}).should == false
+			end
+
+			it "unsubscribes then creates a new subscription if trying to change email address" do
+				new_email = 'newemail@example.org'
+				name      = 'John Smith'
+
+				client.should_receive(:subscription_status).with(email: @email).and_return(:subscribed)
+				client.should_receive(:unsubscribe).with(email: @email).and_return(true)
+				client.should_receive(:subscribe).with(email: new_email, name: name).and_return(true)
+
+				client.update_subscription(@email, { email: 'newemail@example.org', name: name}).should == true
+			end
+
+			it "doesn't change the email if the user complained" do
+				new_email = 'newemail@example.org'
+				name      = 'John Smith'
+
+				client.should_receive(:subscription_status).with(email: @email).and_return(:complained)
+				client.should_receive(:unsubscribe).never
+				client.should_receive(:subscribe).never
+
+				client.update_subscription(@email, { email: 'newemail@example.org', name: name}).should == false
+			end
+
+			it "doesn't change the email if the user unsubscribed" do
+				new_email = 'newemail@example.org'
+				name      = 'John Smith'
+
+				client.should_receive(:subscription_status).with(email: @email).and_return(:unsubscribed)
+				client.should_receive(:unsubscribe).never
+				client.should_receive(:subscribe).never
+
+				client.update_subscription(@email, { email: 'newemail@example.org', name: name}).should == false
+			end
+
+		end
 end

@@ -61,6 +61,25 @@ module Sendyr
 			end
 		end
 
+		def update_subscription(email, opts = {})
+			status = subscription_status(email: email)
+
+			return false if status == :not_in_list
+
+			# Trying to change the email address?
+			# Need to unsubscribe and subscribe again.
+			if (!opts[:email].nil? && opts[:email] != email) &&
+				[:subscribed, :unconfirmed, :bounced, :soft_bounced].include?(status)
+				unsubscribe(email: email)
+			end
+
+			unless [:complained, :unsubscribed].include?(status)
+				subscribe({email: email}.merge(opts)) == true
+			else
+				false
+			end
+		end
+
 		def active_subscriber_count(opts = {})
 			opts = {api_key: @api_key, list_id: @list_id}.merge(opts)
 			raise_if_missing_arg([:list_id, :api_key], opts)
