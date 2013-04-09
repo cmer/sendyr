@@ -1,6 +1,6 @@
 require "faraday"
-require "sendyr/version"
-require "sendyr/client"
+require "require_all"
+require_all File.dirname(__FILE__) + "/sendyr"
 
 module Sendyr
   class << self
