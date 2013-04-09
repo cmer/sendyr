@@ -17,7 +17,7 @@ module Sendyr
 			path   = '/subscribe'
 			result = post_to(path, opts)
 
-			if result.success? && %w(true).include?(clean_body(result))
+			if result.success? && %w(true 1).include?(clean_body(result))
 				respond_with_success(result)
 			else
 				respond_with_failure(result)
@@ -31,7 +31,7 @@ module Sendyr
 			path   = '/unsubscribe'
 			result = post_to(path, opts)
 
-			if result.success? && %w(true).include?(clean_body(result))
+			if result.success? && %w(true 1).include?(clean_body(result))
 				respond_with_success(result)
 			else
 				respond_with_failure(result)
