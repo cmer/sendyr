@@ -13,7 +13,7 @@ module Sendyr
   end
 
   class Configuration
-    attr_accessor :url, :api_key
+    attr_accessor :url, :api_key, :noop
 
     def initialize
     end

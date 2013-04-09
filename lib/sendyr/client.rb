@@ -8,9 +8,12 @@ module Sendyr
 			@list_id     = list_id
 			@api_key     = Sendyr.configuration.api_key
 			@base_uri    = Sendyr.configuration.url
+			@noop        = Sendyr.configuration.noop || false
 		end
 
 		def subscribe(opts = {})
+			return noop if @noop
+
 			opts = {boolean: true, list: @list_id}.merge(opts)
 			raise_if_missing_arg([:email, :list], opts)
 
@@ -25,6 +28,8 @@ module Sendyr
 		end
 
 		def unsubscribe(opts = {})
+			return noop if @noop
+
 			opts = {boolean: true, list: @list_id}.merge(opts)
 			raise_if_missing_arg([:email, :list], opts)
 
@@ -39,6 +44,8 @@ module Sendyr
 		end
 
 		def subscription_status(opts = {})
+			return noop if @noop
+
 			opts = {api_key: @api_key, list_id: @list_id}.merge(opts)
 			raise_if_missing_arg([:api_key, :email, :list_id, :api_key], opts)
 
@@ -62,6 +69,8 @@ module Sendyr
 		end
 
 		def update_subscription(email, opts = {})
+			return noop if @noop
+
 			status = subscription_status(email: email)
 
 			return false if status == :not_in_list
@@ -81,6 +90,8 @@ module Sendyr
 		end
 
 		def active_subscriber_count(opts = {})
+			return noop if @noop
+
 			opts = {api_key: @api_key, list_id: @list_id}.merge(opts)
 			raise_if_missing_arg([:list_id, :api_key], opts)
 
@@ -135,6 +146,10 @@ module Sendyr
 		  word.tr!("-", "_")
 		  word.downcase!
 		  word
+		end
+
+		def noop
+			:noop
 		end
 	end
 end

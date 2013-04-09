@@ -21,6 +21,7 @@ Or install it yourself as:
 		Sendyr.configure do |c|
 			c.url     = 'http://my.sendy-install.com'
 			c.api_key = '1234567890'
+			# c.noop  = true  # You can use this to noop in dev and test environments
 		end
 
 		list_id = 1
