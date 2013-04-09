@@ -33,6 +33,8 @@ Or install it yourself as:
 
 		client.unsubscribe(email: 'joe@example.org')  # => true
 
+		client.update_subscription('joe@example.org', email: 'newemail@example.com', name: 'Joe Smith', FirstName => 'Joe')  # => true
+
 
 ## Contributing
 
