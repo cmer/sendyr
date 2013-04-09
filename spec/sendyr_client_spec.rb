@@ -64,23 +64,23 @@ describe Sendyr::Client do
 		end
 
 		it "unsubscribes the email" do
-			stub_request(:post, "#{@base_url}/subscribe").
+			stub_request(:post, "#{@base_url}/unsubscribe").
 			  with(:body => {"boolean"=>"true",
 			  							 "email"=> @email,
 			  							 "list"=>@list_id}).
         to_return(:status => 200, :body => "true")
 
-			client.subscribe(email: @email).should == true
+			client.unsubscribe(email: @email).should == true
 		end
 
 		it "fails when the response message is an error" do
-			stub_request(:post, "#{@base_url}/subscribe").
+			stub_request(:post, "#{@base_url}/unsubscribe").
 				with(:body => {"boolean"=>"true",
 											 "email"=> @email,
 											 "list"=>@list_id}).
         to_return(:status => 200, :body => "Invalid email address.")
 
-			client.subscribe(email: @email).should == false
+			client.unsubscribe(email: @email).should == false
 		end
 	end
 
