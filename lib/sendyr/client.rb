@@ -137,16 +137,14 @@ module Sendyr
 			value.nil? ? false : value
 		end
 
-		def underscore(word)
-		  word = word.to_s.dup
-		  word.gsub!(/::/, '/')
-		  word.gsub!(/(?:([A-Za-z\d])|^)(#{inflections.acronym_regex})(?=\b|[^a-z])/) { "#{$1}#{$1 && '_'}#{$2.downcase}" }
-		  word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
-		  word.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-		  word.tr!("-", "_")
-		  word.downcase!
-		  word
-		end
+    def underscore(word)
+      word.gsub(/::/, '/').
+      gsub(/\s/, '_').
+      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+      tr("-", "_").
+      downcase
+    end
 
 		def noop
 			:noop
