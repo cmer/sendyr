@@ -120,7 +120,7 @@ module Sendyr
 		end
 
 		def url_for(path)
-			URI.join(@base_uri, path).to_s
+			return @base_uri + path
 		end
 
 		def clean_body(result)
