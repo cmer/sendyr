@@ -1,5 +1,3 @@
-require 'uri'
-
 module Sendyr
 	class Client
 		attr_reader :last_result, :api_key, :base_uri, :list_id
