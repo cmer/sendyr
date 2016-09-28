@@ -40,6 +40,22 @@ module Sendyr
 				respond_with_failure(result)
 			end
 		end
+		
+		def delete(opts = {})
+			return noop if @noop
+
+			opts = {boolean: true, list: @list_id}.merge(opts)
+			raise_if_missing_arg([:email, :list], opts)
+
+			path   = '/api/subscribers/delete.php'
+			result = post_to(path, opts)
+
+			if result.success? && %w(true 1).include?(clean_body(result))
+				respond_with_success(result)
+			else
+				respond_with_failure(result)
+			end
+		end
 
 		def subscription_status(opts = {})
 			return noop if @noop
