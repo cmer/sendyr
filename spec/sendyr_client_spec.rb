@@ -66,7 +66,7 @@ describe Sendyr::Client do
 			client.subscribe(email: @email, name: 'John Smith', "FirstName" => "John").should == false
 		end
 	end
-
+	
 	describe "#unsubscribe" do
 		it "raises exception if email is missing" do
 			expect {
@@ -103,6 +103,45 @@ describe Sendyr::Client do
         to_return(:status => 200, :body => "Invalid email address.")
 
 			client.unsubscribe(email: @email).should == false
+		end
+	end
+	
+	describe "#delete" do
+		it "raises exception if email is missing" do
+			expect {
+				client.delete(foo: @email)
+			}.to raise_error(ArgumentError, 'You must specify :email.')
+		end
+
+		it "deletes the email" do
+			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+			  with(:body => {"boolean"=>"true",
+			  							 "email"=> @email,
+			  							 "list"=>@list_id}).
+        to_return(:status => 200, :body => "true")
+
+			client.delete(email: @email).should == true
+		end
+
+		it "succeeds when the response body is '1'" do
+			# The API doc says it should return 'true', but we see '1' in real life.
+			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+			  with(:body => {"boolean"=>"true",
+			  							 "email"=> @email,
+			  							 "list"=>@list_id}).
+        to_return(:status => 200, :body => "1")
+
+			client.delete(email: @email).should == true
+		end
+
+		it "fails when the response message is an error" do
+			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+				with(:body => {"boolean"=>"true",
+											 "email"=> @email,
+											 "list"=>@list_id}).
+        to_return(:status => 200, :body => "Invalid email address.")
+
+			client.delete(email: @email).should == false
 		end
 	end
 
