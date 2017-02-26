@@ -44,8 +44,8 @@ module Sendyr
 		def delete(opts = {})
 			return noop if @noop
 
-			opts = {boolean: true, list: @list_id}.merge(opts)
-			raise_if_missing_arg([:email, :list], opts)
+			opts = {boolean: true, api_key: @api_key, list: @list_id}.merge(opts)
+			raise_if_missing_arg([:email, :list, :api_key], opts)
 
 			path   = '/api/subscribers/delete.php'
 			result = post_to(path, opts)

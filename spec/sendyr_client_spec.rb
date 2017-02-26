@@ -114,10 +114,11 @@ describe Sendyr::Client do
 		end
 
 		it "deletes the email" do
-			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 			  with(:body => {"boolean"=>"true",
 			  							 "email"=> @email,
-			  							 "list"=>@list_id}).
+			  							 "list"=>@list_id,
+                       "api_key"=>@api_key}).
         to_return(:status => 200, :body => "true")
 
 			client.delete(email: @email).should == true
@@ -125,20 +126,22 @@ describe Sendyr::Client do
 
 		it "succeeds when the response body is '1'" do
 			# The API doc says it should return 'true', but we see '1' in real life.
-			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 			  with(:body => {"boolean"=>"true",
 			  							 "email"=> @email,
-			  							 "list"=>@list_id}).
+			  							 "list"=>@list_id,
+											 "api_key"=>@api_key}).
         to_return(:status => 200, :body => "1")
 
 			client.delete(email: @email).should == true
 		end
 
 		it "fails when the response message is an error" do
-			stub_request(:post, "#{@base_url}/api/subscribers/delete").
+			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 				with(:body => {"boolean"=>"true",
 											 "email"=> @email,
-											 "list"=>@list_id}).
+											 "list"=>@list_id,
+											 "api_key"=>@api_key}).
         to_return(:status => 200, :body => "Invalid email address.")
 
 			client.delete(email: @email).should == false
