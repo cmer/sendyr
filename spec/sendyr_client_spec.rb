@@ -117,7 +117,7 @@ describe Sendyr::Client do
 			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 			  with(:body => {"boolean"=>"true",
 			  							 "email"=> @email,
-			  							 "list"=>@list_id,
+			  							 "list_id"=>@list_id,
                        "api_key"=>@api_key}).
         to_return(:status => 200, :body => "true")
 
@@ -129,7 +129,7 @@ describe Sendyr::Client do
 			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 			  with(:body => {"boolean"=>"true",
 			  							 "email"=> @email,
-			  							 "list"=>@list_id,
+			  							 "list_id"=>@list_id,
 											 "api_key"=>@api_key}).
         to_return(:status => 200, :body => "1")
 
@@ -140,7 +140,7 @@ describe Sendyr::Client do
 			stub_request(:post, "#{@base_url}/api/subscribers/delete.php").
 				with(:body => {"boolean"=>"true",
 											 "email"=> @email,
-											 "list"=>@list_id,
+											 "list_id"=>@list_id,
 											 "api_key"=>@api_key}).
         to_return(:status => 200, :body => "Invalid email address.")
 
