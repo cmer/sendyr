@@ -1,5 +1,3 @@
-require 'uri'
-
 module Sendyr
 	class Client
 		attr_reader :last_result, :api_key, :base_uri, :list_id
@@ -120,7 +118,7 @@ module Sendyr
 		end
 
 		def url_for(path)
-			URI.join(@base_uri, path).to_s
+			return File.join(@base_uri, path)
 		end
 
 		def clean_body(result)
